@@ -21,7 +21,7 @@ namespace Learning.Application.UseCases.ChaptersUseCases.Commands.AddChapter
             var chapter = _mapper.Map<Chapter>(request);
 
             await _context.AddAsync(chapter);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return new AddChapterResponse(true, "Chapter added successfully");
         }

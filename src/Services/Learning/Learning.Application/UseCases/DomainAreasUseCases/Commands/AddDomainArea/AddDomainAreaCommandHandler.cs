@@ -22,7 +22,7 @@ namespace Learning.Application.UseCases.DomainAreaUseCases.Commands.AddDomainAre
             var domainArea = _mapper.Map<DomainArea>(request);
 
             await _context.AddAsync(domainArea);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return new AddDomainAreaResponse(true, "Domain area added successfully");
         }

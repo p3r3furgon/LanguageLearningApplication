@@ -29,14 +29,14 @@ namespace Learning.API.Controllers
         public async Task<IActionResult> UpdateChapter(int id, ChapterRequestDto chapterDto)
         {
             var response = await _mediator.Send(new UpdateChapterCommand(id, chapterDto));
-            return StatusCode(StatusCodes.Status201Created, response);
+            return StatusCode(StatusCodes.Status200OK, response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteChapter(int id)
         {
             var response = await _mediator.Send(new DeleteChapterCommand(id));
-            return StatusCode(StatusCodes.Status201Created, response);
+            return StatusCode(StatusCodes.Status200OK, response);
         }
     }
 }

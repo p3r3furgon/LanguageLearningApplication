@@ -29,7 +29,7 @@ namespace Learning.Application.UseCases.QuestionsUseCases.Commands.AddMediaQuest
 
             var presignedUrl = await _minioService.PutObject("images", request.MediaQuestionDto.File);
             await _context.MediaQuestions.AddAsync(mediaQuestion);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return new AddMediaQuestionResponse(presignedUrl, true, "");
         }

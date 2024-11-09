@@ -24,7 +24,7 @@ namespace Learning.Application.UseCases.TestsUseCases.Commands.DeleteTest
                 return new DeleteTestResponse(false, "Test not found");
 
             _context.Tests.Remove(test);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return new DeleteTestResponse(true, "Test deleted successfully");
         }

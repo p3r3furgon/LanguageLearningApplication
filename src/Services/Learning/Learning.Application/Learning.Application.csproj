@@ -20,6 +20,7 @@
     <Folder Include="Dtos\ResponseDtos\" />
     <Folder Include="UseCases\ChaptersUseCases\Queries\" />
     <Folder Include="UseCases\DomainAreasUseCases\Queries\" />
+    <Folder Include="UseCases\QuestionsUseCases\Queries\" />
     <Folder Include="UseCases\TestsUseCases\Queries\" />
   </ItemGroup>
 

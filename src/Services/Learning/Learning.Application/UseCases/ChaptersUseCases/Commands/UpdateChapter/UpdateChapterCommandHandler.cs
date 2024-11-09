@@ -28,7 +28,7 @@ namespace Learning.Application.UseCases.ChaptersUseCases.Commands.UpdateChapter
             chapter = _mapper.Map(request, chapter);
 
             _context.Update(chapter);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return new UpdateChapterResponse(true, "Chapter updated successfully");
         }

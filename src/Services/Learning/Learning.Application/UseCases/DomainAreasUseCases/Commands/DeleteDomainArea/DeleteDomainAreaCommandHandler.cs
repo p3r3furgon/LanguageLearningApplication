@@ -24,7 +24,7 @@ namespace Learning.Application.UseCases.DomainAreaUseCases.Commands.DeleteDomain
                 return new DeleteDomainAreaResponse(false, "Domain area not found");
 
             _context.Domains.Remove(domainArea);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return new DeleteDomainAreaResponse(true, "Domain area deleted successfully");
         }

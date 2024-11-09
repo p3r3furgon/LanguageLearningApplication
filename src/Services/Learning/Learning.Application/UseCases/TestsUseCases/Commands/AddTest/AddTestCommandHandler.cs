@@ -22,7 +22,7 @@ namespace Learning.Application.UseCases.TestsUseCases.Commands.AddTest
             var test = _mapper.Map<Test>(request);
 
             await _context.AddAsync(test);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return new AddTestResponse(true, "Test added successfully");
         }

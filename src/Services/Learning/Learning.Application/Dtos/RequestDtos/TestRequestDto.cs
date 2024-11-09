@@ -2,7 +2,6 @@
 {
     public class TestRequestDto
     {
-        public int Id { get; set; }
         public int SerialNumber { get; set; }
         public string Name { get; set; } = string.Empty;
         public int NumberOfQuestions { get; set; }

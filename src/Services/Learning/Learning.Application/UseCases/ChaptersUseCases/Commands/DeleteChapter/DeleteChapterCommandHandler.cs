@@ -24,7 +24,7 @@ namespace Learning.Application.UseCases.ChaptersUseCases.Commands.DeleteChapter
                 return new DeleteChapterResponse(false, "chapter not found");
 
             _context.Chapters.Remove(chapter);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return new DeleteChapterResponse(true, "Chapter deleted successfully");
         }
