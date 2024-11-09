@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Learning.DataAccess\Learning.DataAccess.csproj" />
+    <ProjectReference Include="..\Learning.Domain\Learning.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dtos\" />
+    <Folder Include="UseCases\ChaptersUseCases\Commands\" />
+    <Folder Include="UseCases\ChaptersUseCases\Queries\" />
+    <Folder Include="UseCases\DomainAreasUseCases\Commands\" />
+    <Folder Include="UseCases\DomainAreasUseCases\Queries\" />
+    <Folder Include="UseCases\TestsUseCases\Commands\" />
+    <Folder Include="UseCases\TestsUseCases\Queries\" />
+  </ItemGroup>
+
+</Project>
