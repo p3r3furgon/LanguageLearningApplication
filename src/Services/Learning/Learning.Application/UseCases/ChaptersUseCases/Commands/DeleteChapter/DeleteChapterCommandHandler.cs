@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Learning.Application.UseCases.ChaptersUseCases.Commands.UpdateChapter;
-using Learning.DataAccess;
+﻿using Learning.DataAccess;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,7 +26,7 @@ namespace Learning.Application.UseCases.ChaptersUseCases.Commands.DeleteChapter
             _context.Chapters.Remove(chapter);
             await _context.SaveChangesAsync();
 
-            return new DeleteChapterResponse(true, "");
+            return new DeleteChapterResponse(true, "Chapter deleted successfully");
         }
     }
 }

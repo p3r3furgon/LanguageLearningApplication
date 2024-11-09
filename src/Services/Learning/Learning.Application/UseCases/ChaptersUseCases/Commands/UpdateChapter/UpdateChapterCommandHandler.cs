@@ -23,14 +23,14 @@ namespace Learning.Application.UseCases.ChaptersUseCases.Commands.UpdateChapter
                 .FirstOrDefault();
 
             if(chapter is null)
-                return new UpdateChapterResponse(false, "chapter not found");
+                return new UpdateChapterResponse(false, "Chapter not found");
 
             chapter = _mapper.Map(request, chapter);
 
             _context.Update(chapter);
             await _context.SaveChangesAsync();
 
-            return new UpdateChapterResponse(true, "");
+            return new UpdateChapterResponse(true, "Chapter updated successfully");
         }
     }
 }

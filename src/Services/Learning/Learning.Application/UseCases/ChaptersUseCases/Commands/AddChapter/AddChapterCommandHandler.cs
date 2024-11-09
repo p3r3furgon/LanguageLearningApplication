@@ -23,7 +23,7 @@ namespace Learning.Application.UseCases.ChaptersUseCases.Commands.AddChapter
             await _context.AddAsync(chapter);
             await _context.SaveChangesAsync();
 
-            return new AddChapterResponse(true, "");
+            return new AddChapterResponse(true, "Chapter added successfully");
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using Learning.Domain.Models.Questions;
-using Learning.Domain.Models;
-
-namespace Learning.Application.Dtos.RequestDtos
+﻿namespace Learning.Application.Dtos.RequestDtos
 {
     public class DomainAreaRequestDto
     {

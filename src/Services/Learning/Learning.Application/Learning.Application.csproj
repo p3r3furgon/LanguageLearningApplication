@@ -19,9 +19,7 @@
   <ItemGroup>
     <Folder Include="Dtos\ResponseDtos\" />
     <Folder Include="UseCases\ChaptersUseCases\Queries\" />
-    <Folder Include="UseCases\DomainAreasUseCases\Commands\" />
     <Folder Include="UseCases\DomainAreasUseCases\Queries\" />
-    <Folder Include="UseCases\TestsUseCases\Commands\" />
     <Folder Include="UseCases\TestsUseCases\Queries\" />
   </ItemGroup>
 
