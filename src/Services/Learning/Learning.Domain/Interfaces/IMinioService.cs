@@ -6,5 +6,6 @@ namespace Learning.Domain.Interfaces
     {
         Task<string> PutObject(string bucketName, IFormFile file);
         Task DeleteObject(string bucketName, string fileName);
+        Task<string> GetPresigned(string bucketName, string fileName);
     }
 }

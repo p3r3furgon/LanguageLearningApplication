@@ -18,24 +18,19 @@ namespace Learning.Application.UseCases.QuestionsUseCases.Commands.AddMediaQuest
 
         public async Task<AddMediaQuestionResponse> Handle(AddMediaQuestionCommand request, CancellationToken cancellationToken)
         {
-            var presignedUrl = await _minioService.PutObject("images", request.File);
-
             var mediaQuestion = new MediaQuestion()
             {
-                Condition = request.Condition,
-                Answer = request.Answer,
-                MediaType = request.MediaType,
-                FileOptions = new FileStorageOptions()
-                {
-                    Name = request.File.FileName,
-                    PresignedUrl = presignedUrl,
-                    ExpiriedAt = DateTime.UtcNow + TimeSpan.FromDays(7)
-                },
-                DomainId = request.DomainId
+                Condition = request.MediaQuestionDto.Condition,
+                Answer = request.MediaQuestionDto.Answer,
+                MediaType = request.MediaQuestionDto.MediaType,
+                MediaFileName = request.MediaQuestionDto.File.FileName,
+                DomainId = request.MediaQuestionDto.DomainId
             };
 
+            var presignedUrl = await _minioService.PutObject("images", request.MediaQuestionDto.File);
             await _context.MediaQuestions.AddAsync(mediaQuestion);
             await _context.SaveChangesAsync();
+
             return new AddMediaQuestionResponse(presignedUrl, true, "");
         }
     }

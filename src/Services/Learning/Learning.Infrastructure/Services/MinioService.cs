@@ -30,14 +30,7 @@ namespace Learning.Infrastructure.Services
                 await _minioClient.PutObjectAsync(putObjectArgs);
             }
 
-            var fileName = file.FileName;
-            
-            var getPresignedArgs = new PresignedGetObjectArgs()
-                .WithBucket(bucketName)
-                .WithObject(fileName)
-                .WithExpiry(60*60*24*7);
-
-            var presignedUrl = await _minioClient.PresignedGetObjectAsync(getPresignedArgs);
+            var presignedUrl = await GetPresigned(bucketName, file.FileName);
 
             return presignedUrl;
         }
@@ -49,6 +42,16 @@ namespace Learning.Infrastructure.Services
                 .WithObject(fileName);
 
             await _minioClient.RemoveObjectAsync(removeObjectArgs);
+        }
+
+        public async Task<string> GetPresigned(string bucketName, string fileName)
+        {
+            var getPresignedArgs = new PresignedGetObjectArgs()
+                .WithBucket(bucketName)
+                .WithObject(fileName)
+                .WithExpiry(60 * 60 * 5);
+
+            return await _minioClient.PresignedGetObjectAsync(getPresignedArgs);
         }
     }
 }

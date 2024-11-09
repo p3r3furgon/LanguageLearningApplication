@@ -8,13 +8,10 @@ namespace Learning.API.Controllers
     [Route("[controller]")]
     public class LanguageLearningController : ControllerBase
     {
-
-        private readonly ILogger<LanguageLearningController> _logger;
         private readonly IMediator _mediator;
 
-        public LanguageLearningController(ILogger<LanguageLearningController> logger, IMediator mediator)
+        public LanguageLearningController(IMediator mediator)
         {
-            _logger = logger;
             _mediator = mediator;
         }
 

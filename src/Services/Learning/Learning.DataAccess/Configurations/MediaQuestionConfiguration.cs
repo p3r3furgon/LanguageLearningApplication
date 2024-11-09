@@ -8,13 +8,8 @@ namespace Learning.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<MediaQuestion> builder)
         {
-            builder.OwnsOne(m => m.FileOptions, fileOptionsBuilder =>
-            {
-                fileOptionsBuilder.Property(f => f.Name).IsRequired();
-                fileOptionsBuilder.Property(f => f.PresignedUrl).IsRequired();
-                fileOptionsBuilder.Property(f => f.ExpiriedAt).IsRequired();
-            });
             builder.Property(q => q.MediaType).HasConversion<string>();
+            builder.Property(q => q.MediaFileName).IsRequired();
         }
     }
 }

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="MediatR" Version="12.4.1" />
   </ItemGroup>
 
@@ -16,8 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\" />
-    <Folder Include="UseCases\ChaptersUseCases\Commands\" />
+    <Folder Include="Dtos\ResponseDtos\" />
     <Folder Include="UseCases\ChaptersUseCases\Queries\" />
     <Folder Include="UseCases\DomainAreasUseCases\Commands\" />
     <Folder Include="UseCases\DomainAreasUseCases\Queries\" />

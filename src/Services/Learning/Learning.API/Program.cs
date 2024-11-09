@@ -1,4 +1,5 @@
 using Learning.API.Extensions;
+using Learning.Application.UseCases.ChaptersUseCases.Commands.AddChapter;
 using Learning.Application.UseCases.QuestionsUseCases.Commands.AddMediaQuestion;
 using Learning.DataAccess;
 using Learning.Domain.Enums;
@@ -21,6 +22,7 @@ builder.Services.AddDbContext<LearningDbContext>(options =>
 });
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<AddMediaQuestionCommandHandler>());
+builder.Services.AddAutoMapper(typeof(AddChapterMapper));
 
 builder.Services.AddScoped<IMinioService, MinioService>();
 
