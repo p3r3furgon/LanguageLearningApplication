@@ -24,7 +24,7 @@ services:
     environment:
       - ConnectionStrings__LearningDbContext=Host=learningdb;Port=5432;Database=learning;Username=postgres;Password=postgres;
       - ASPNETCORE_ENVIRONMENT=Development
-      - MinioSettings__Host=localhost:9000
+      - MinioSettings__Host=minio:9000
       - MinioSettings__UserName=minio
       - MinioSettings__Password=minio123
     restart: on-failure
@@ -49,6 +49,8 @@ services:
       - MINIO_ROOT_PASSWORD=minio123
     volumes:
       - minio-storage:/data
+    networks:
+      - learningapp-network
 
   pgadmin:
     image: dpage/pgadmin4
