@@ -1,5 +1,7 @@
 ﻿using Learning.Domain.Interfaces;
+using Learning.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;
 
@@ -8,17 +10,20 @@ namespace Learning.Infrastructure.Services
     public class MinioService : IMinioService
     {
         private readonly IMinioClient _minioClient;
+        MinioSettings _options;
 
-        public MinioService()
+        public MinioService(IOptions<MinioSettings> options)
         {
+            _options = options.Value;
             _minioClient = new MinioClient()
-                .WithEndpoint("localhost:9000")
-                .WithCredentials("minio", "minio123")
+                .WithEndpoint(_options.Host)
+                .WithCredentials(_options.UserName, _options.Password)
                 .Build();
         }
 
         public async Task<string> PutObject(string bucketName, IFormFile file)
         {
+            await CreateBucketIfNotExists(bucketName);
             using (var fileStream = file.OpenReadStream())
             {
                 var putObjectArgs = new PutObjectArgs()
@@ -31,6 +36,7 @@ namespace Learning.Infrastructure.Services
             }
 
             var presignedUrl = await GetPresigned(bucketName, file.FileName);
+            Console.WriteLine($"Uploaded {file.FileName} to bucket {bucketName}");
 
             return presignedUrl;
         }
@@ -52,6 +58,16 @@ namespace Learning.Infrastructure.Services
                 .WithExpiry(60 * 60 * 5);
 
             return await _minioClient.PresignedGetObjectAsync(getPresignedArgs);
+        }
+
+        public async Task CreateBucketIfNotExists(string bucketName)
+        {
+            var bucketExists = await _minioClient.BucketExistsAsync(new BucketExistsArgs().WithBucket(bucketName));
+            if (!bucketExists)
+            {
+                Console.WriteLine("creating");
+                await _minioClient.MakeBucketAsync(new MakeBucketArgs().WithBucket(bucketName));
+            }
         }
     }
 }

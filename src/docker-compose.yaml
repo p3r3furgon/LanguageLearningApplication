@@ -1,0 +1,70 @@
+version: "3.8"
+
+services:
+  learningdb:
+    container_name: learningdb
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=learning
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_learning:/var/lib/postgresql/data/ 
+    networks:
+      - learningapp-network   
+
+  learning.api:
+    image: learning.api
+    build:
+      context: ../
+      dockerfile: src/Services/Learning/Learning.API/Dockerfile
+    environment:
+      - ConnectionStrings__LearningDbContext=Host=learningdb;Port=5432;Database=learning;Username=postgres;Password=postgres;
+      - ASPNETCORE_ENVIRONMENT=Development
+      - MinioSettings__Host=localhost:9000
+      - MinioSettings__UserName=minio
+      - MinioSettings__Password=minio123
+    restart: on-failure
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./.aspnet/learning.api/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+    networks:
+      - learningapp-network
+    depends_on:
+      - learningdb
+      - minio
+
+  minio:
+    image: minio/minio:latest
+    command: server --console-address ":9001" /data/
+    ports:
+      - "9000:9000"
+      - "9002:9001"
+    environment:
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=minio123
+    volumes:
+      - minio-storage:/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - learningdb
+    networks:
+      - learningapp-network
+
+networks:
+  learningapp-network:
+
+volumes:
+  postgres_learning:
+  minio-storage:

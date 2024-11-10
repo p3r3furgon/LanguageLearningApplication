@@ -4,6 +4,7 @@ using Learning.Application.UseCases.QuestionsUseCases.Commands.AddMediaQuestion;
 using Learning.DataAccess;
 using Learning.Domain.Enums;
 using Learning.Domain.Interfaces;
+using Learning.Infrastructure.Models;
 using Learning.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -15,7 +16,8 @@ builder.Services.AddControllers()
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 
-builder.Services.AddControllers();
+builder.Services.Configure<MinioSettings>(builder.Configuration.GetSection("MinioSettings"));
+
 builder.Services.AddDbContext<LearningDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(LearningDbContext)));
@@ -39,6 +41,23 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var dbContext = services.GetRequiredService<LearningDbContext>();
+        dbContext.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating the database.");
+        throw;
+    }
 }
 
 app.UseHttpsRedirection();

@@ -22,12 +22,17 @@ namespace Learning.Application.UseCases.QuestionsUseCases.Commands.AddMediaQuest
             {
                 Condition = request.MediaQuestionDto.Condition,
                 Answer = request.MediaQuestionDto.Answer,
+                Explanation = request.MediaQuestionDto.Explanation,
                 MediaType = request.MediaQuestionDto.MediaType,
                 MediaFileName = request.MediaQuestionDto.File.FileName,
                 DomainId = request.MediaQuestionDto.DomainId
             };
 
-            var presignedUrl = await _minioService.PutObject("images", request.MediaQuestionDto.File);
+            var bucketName = request.MediaQuestionDto.MediaType == Domain.Enums.MediaType.Image ?
+                "images" :
+                "audios";
+
+            var presignedUrl = await _minioService.PutObject(bucketName, request.MediaQuestionDto.File);
             await _context.MediaQuestions.AddAsync(mediaQuestion);
             await _context.SaveChangesAsync(cancellationToken);
 
