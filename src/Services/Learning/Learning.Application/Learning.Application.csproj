@@ -16,12 +16,4 @@
     <ProjectReference Include="..\Learning.Domain\Learning.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dtos\ResponseDtos\" />
-    <Folder Include="UseCases\ChaptersUseCases\Queries\" />
-    <Folder Include="UseCases\DomainAreasUseCases\Queries\" />
-    <Folder Include="UseCases\QuestionsUseCases\Queries\" />
-    <Folder Include="UseCases\TestsUseCases\Queries\" />
-  </ItemGroup>
-
 </Project>

@@ -1,4 +1,6 @@
 ﻿using Learning.Application.Dtos.RequestDtos;
+using Learning.Application.UseCases.DomainAreasUseCases.Queries.GetDomainAreaById;
+using Learning.Application.UseCases.DomainAreasUseCases.Queries.GetDomainAreas;
 using Learning.Application.UseCases.DomainAreaUseCases.Commands.AddDomainArea;
 using Learning.Application.UseCases.DomainAreaUseCases.Commands.DeleteDomainArea;
 using MediatR;
@@ -15,6 +17,20 @@ namespace Learning.API.Controllers
         public DomainAreasController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetDomainAreas()
+        {
+            var response = await _mediator.Send(new GetDomainAreasQuery());
+            return StatusCode(StatusCodes.Status201Created, response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetDomainAreaById(int id)
+        {
+            var response = await _mediator.Send(new GetDomainAreaByIdQuery(id));
+            return StatusCode(StatusCodes.Status201Created, response);
         }
 
         [HttpPost]

@@ -1,4 +1,6 @@
-﻿namespace Learning.Domain.Models
+﻿using System.Text.Json.Serialization;
+
+namespace Learning.Domain.Models
 {
     public class Test
     {
@@ -10,6 +12,8 @@
 
         //Relation with Domain
         public int DomainId { get; set; }
+
+        [JsonIgnore]
         public DomainArea Domain { get; set; } = null!;
     }
 }

@@ -5,6 +5,12 @@ using Learning.Application.UseCases.QuestionsUseCases.Commands.AddTranslateQuest
 using Learning.Application.UseCases.QuestionsUseCases.Commands.DeleteBuildSentanceQuestion;
 using Learning.Application.UseCases.QuestionsUseCases.Commands.DeleteMediaQuestion;
 using Learning.Application.UseCases.QuestionsUseCases.Commands.DeleteTranslateQuestion;
+using Learning.Application.UseCases.QuestionsUseCases.Queries.GetBuildSentanceQuestionById;
+using Learning.Application.UseCases.QuestionsUseCases.Queries.GetBuildSentanceQuestions;
+using Learning.Application.UseCases.QuestionsUseCases.Queries.GetMediaQuestionById;
+using Learning.Application.UseCases.QuestionsUseCases.Queries.GetMediaQuestions;
+using Learning.Application.UseCases.QuestionsUseCases.Queries.GetTranslateQuestionById;
+using Learning.Application.UseCases.QuestionsUseCases.Queries.GetTranslateQuestions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +25,20 @@ namespace Learning.API.Controllers
         public QuestionsController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet("media")]
+        public async Task<IActionResult> GetMediaQuestions()
+        {
+            var response = await _mediator.Send(new GetMediaQuestionsQuery());
+            return StatusCode(StatusCodes.Status201Created, response);
+        }
+
+        [HttpGet("media/{id}")]
+        public async Task<IActionResult> GetMediaQuestionById(int id)
+        {
+            var response = await _mediator.Send(new GetMediaQuestionByIdQuery(id));
+            return StatusCode(StatusCodes.Status201Created, response);
         }
 
         [HttpPost("media")]
@@ -36,6 +56,21 @@ namespace Learning.API.Controllers
             return StatusCode(StatusCodes.Status201Created, response);
         }
 
+
+        [HttpGet("translate")]
+        public async Task<IActionResult> GetTranslateQuestions()
+        {
+            var response = await _mediator.Send(new GetTranslateQuestionsQuery());
+            return StatusCode(StatusCodes.Status201Created, response);
+        }
+
+        [HttpGet("translate/{id}")]
+        public async Task<IActionResult> GetTranslateQuestionById(int id)
+        {
+            var response = await _mediator.Send(new GetTranslateQuestionByIdQuery(id));
+            return StatusCode(StatusCodes.Status201Created, response);
+        }
+
         [HttpPost("translate")]
         public async Task<IActionResult> AddTranslateQuestion(TranslateQuestionRequestDto translateQuestionDto)
         {
@@ -43,11 +78,25 @@ namespace Learning.API.Controllers
             return StatusCode(StatusCodes.Status201Created, response);
         }
 
-
         [HttpDelete("translate/{id}")]
         public async Task<IActionResult> DeleteTranslateQuestion(int id)
         {
             var response = await _mediator.Send(new DeleteTranslateQuestionCommand(id));
+            return StatusCode(StatusCodes.Status201Created, response);
+        }
+
+
+        [HttpGet("build_sentance")]
+        public async Task<IActionResult> GetBuildSentanceQuestions()
+        {
+            var response = await _mediator.Send(new GetBuildSentanceQuestionsQuery());
+            return StatusCode(StatusCodes.Status201Created, response);
+        }
+
+        [HttpGet("build_sentance/{id}")]
+        public async Task<IActionResult> GetBuildSentanceQuestionById(int id)
+        {
+            var response = await _mediator.Send(new GetBuildSentanceQuestionByIdQuery(id));
             return StatusCode(StatusCodes.Status201Created, response);
         }
 
