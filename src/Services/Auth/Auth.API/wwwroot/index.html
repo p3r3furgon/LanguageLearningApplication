@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация и Логин</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input[type="text"], input[type="password"], input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #218838;
+            }
+
+        .message {
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Регистрация</h2>
+        <form id="registerForm">
+            <input type="text" id="firstName" placeholder="Имя" required>
+            <input type="text" id="surname" placeholder="Фамилия" required>
+            <input type="text" id="username" placeholder="Имя пользователя" required>
+            <input type="text" id="birthDate" placeholder="Дата рождения" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Пароль" required>
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+        <div class="message" id="registerMessage"></div>
+
+        <h2>Логин</h2>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Пароль" required>
+            <button type="submit">Войти</button>
+        </form>
+        <div class="message" id="loginMessage"></div>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const response = await fetch('http://localhost:8081/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userDto: {
+                        firstName: document.getElementById('firstName').value,
+                        surname: document.getElementById('surname').value,
+                        userName: document.getElementById('username').value,
+                        birthDate: document.getElementById('birthDate').value,
+                        email: document.getElementById('email').value,
+                        password: document.getElementById('password').value
+                    }
+                })
+            });
+            const data = await response.json();
+            document.getElementById('registerMessage').innerText = data.message || 'Регистрация прошла успешно!';
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const response = await fetch('http://localhost:8081/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    Email: document.getElementById('loginEmail').value,
+                    Password: document.getElementById('loginPassword').value
+                })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                localStorage.setItem('accessToken', data.accessToken); // Сохранение токена
+                window.location.href = 'media.html'; // Перенаправление на новую страницу
+            } else {
+                document.getElementById('loginMessage').innerText = data.message || 'Ошибка при входе.';
+            }
+        });
+    </script>
+</body>
+</html>

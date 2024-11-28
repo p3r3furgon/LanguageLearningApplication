@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Медиа Вопросы</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Получить Медиа Вопросы</h2>
+        <button id="getMediaButton">Получить Вопросы</button>
+        <div class="message" id="mediaMessage"></div>
+    </div>
+
+    <script>
+        document.getElementById('getMediaButton').addEventListener('click', async function() {
+            const accessToken = localStorage.getItem('accessToken');
+            console.log(accessToken);
+            const response = await fetch('http://localhost:8082/questions/media', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            const data = await response.json();
+            document.getElementById('mediaMessage').innerText = data.message || 'Вопросы получены успешно!';
+        });
+    </script>
+</body>
+</html>

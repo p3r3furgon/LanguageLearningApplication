@@ -1,4 +1,4 @@
-using CommonFiles.Messaging;
+﻿using CommonFiles.Messaging;
 using CommonFiles.Auth.Extensions;
 using Learning.API.Extensions;
 using Learning.API.Middleware;
@@ -75,6 +75,16 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin() 
+               .AllowAnyMethod() 
+               .AllowAnyHeader(); 
+    });
+});
+
 builder.Services.AddMassTransit(m =>
 {
     m.AddConsumer<UserCreatedConsumer>();
@@ -133,7 +143,9 @@ app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors();
 
 app.MapControllers();
 

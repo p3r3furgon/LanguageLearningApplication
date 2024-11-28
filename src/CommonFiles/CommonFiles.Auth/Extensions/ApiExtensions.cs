@@ -28,7 +28,11 @@ namespace CommonFiles.Auth.Extensions
                     { 
                         OnMessageReceived = context =>
                         {
-                            context.Token = context.Request.Headers["Authorization"];
+                            var authorizationHeader = context.Request.Headers["Authorization"].ToString();
+                            if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
+                            {
+                                context.Token = authorizationHeader.Substring("Bearer ".Length).Trim();
+                            }
                             return Task.CompletedTask;
                         }
                     };
