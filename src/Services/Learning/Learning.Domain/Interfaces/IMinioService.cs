@@ -8,5 +8,6 @@ namespace Learning.Domain.Interfaces
         Task DeleteObject(string bucketName, string fileName);
         Task<string> GetPresigned(string bucketName, string fileName);
         Task CreateBucketIfNotExists(string bucketName);
+        Task<byte[]> GetBytes(string bucketName, string fileName);
     }
 }

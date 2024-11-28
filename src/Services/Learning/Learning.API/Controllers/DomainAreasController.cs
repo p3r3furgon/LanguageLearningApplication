@@ -1,9 +1,12 @@
 ﻿using Learning.Application.Dtos.RequestDtos;
+using Learning.Application.UseCases.ChaptersUseCases.Queries.GetChapterById;
 using Learning.Application.UseCases.DomainAreasUseCases.Queries.GetDomainAreaById;
 using Learning.Application.UseCases.DomainAreasUseCases.Queries.GetDomainAreas;
 using Learning.Application.UseCases.DomainAreaUseCases.Commands.AddDomainArea;
 using Learning.Application.UseCases.DomainAreaUseCases.Commands.DeleteDomainArea;
+using Learning.Application.UseCases.TestsUseCases.Queries.GetTestsByDomainAreaId;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Learning.API.Controllers
@@ -33,7 +36,16 @@ namespace Learning.API.Controllers
             return StatusCode(StatusCodes.Status201Created, response);
         }
 
+        [HttpGet("{id}/tests")]
+        public async Task<IActionResult> GetTestsByDomainAreaId(int id)
+        {
+            var response = await _mediator.Send(new GetTestsByDomainAreaIdQuery(id));
+            return StatusCode(StatusCodes.Status201Created, response);
+        }
+
         [HttpPost]
+        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "SuperAdmin")]
         public async Task<IActionResult> AddDomainArea(DomainAreaRequestDto domainAreaDto)
         {
             var response = await _mediator.Send(new AddDomainAreaCommand(domainAreaDto));
@@ -41,6 +53,8 @@ namespace Learning.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "SuperAdmin")]
         public async Task<IActionResult> DeleteDomainArea(int id)
         {
             var response = await _mediator.Send(new DeleteDomainAreaCommand(id));

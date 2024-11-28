@@ -4,7 +4,9 @@ using Learning.Application.UseCases.ChaptersUseCases.Commands.DeleteChapter;
 using Learning.Application.UseCases.ChaptersUseCases.Commands.UpdateChapter;
 using Learning.Application.UseCases.ChaptersUseCases.Queries.GetChapterById;
 using Learning.Application.UseCases.ChaptersUseCases.Queries.GetChapters;
+using Learning.Application.UseCases.DomainAreasUseCases.Queries.GetDomainAreasByChapterId;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Learning.API.Controllers
@@ -34,7 +36,16 @@ namespace Learning.API.Controllers
             return StatusCode(StatusCodes.Status201Created, response);
         }
 
+        [HttpGet("{id}/domains")]
+        public async Task<IActionResult> GetDomainsByChapterId(int id)
+        {
+            var response = await _mediator.Send(new GetDomainAreasByChapterIdQuery(id));
+            return StatusCode(StatusCodes.Status201Created, response);
+        }
+
         [HttpPost]
+        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "SuperAdmin")]
         public async Task<IActionResult> AddChapter(ChapterRequestDto chapterDto)
         {
             var response = await _mediator.Send(new AddChapterCommand(chapterDto));
@@ -42,6 +53,8 @@ namespace Learning.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "SuperAdmin")]
         public async Task<IActionResult> UpdateChapter(int id, ChapterRequestDto chapterDto)
         {
             var response = await _mediator.Send(new UpdateChapterCommand(id, chapterDto));
@@ -49,6 +62,8 @@ namespace Learning.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "SuperAdmin")]
         public async Task<IActionResult> DeleteChapter(int id)
         {
             var response = await _mediator.Send(new DeleteChapterCommand(id));

@@ -1,4 +1,5 @@
 ﻿using Learning.DataAccess;
+using Learning.Domain.Enums;
 using Learning.Domain.Interfaces;
 using Learning.Domain.Models.Questions;
 using MediatR;
@@ -28,7 +29,7 @@ namespace Learning.Application.UseCases.QuestionsUseCases.Commands.AddMediaQuest
                 DomainId = request.MediaQuestionDto.DomainId
             };
 
-            var bucketName = request.MediaQuestionDto.MediaType == Domain.Enums.MediaType.Image ?
+            var bucketName = request.MediaQuestionDto.MediaType == MediaType.Image ?
                 "images" :
                 "audios";
 

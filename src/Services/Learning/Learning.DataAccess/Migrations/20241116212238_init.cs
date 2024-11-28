@@ -36,9 +36,10 @@ namespace Learning.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    NickName = table.Column<string>(type: "text", nullable: false),
+                    UserName = table.Column<string>(type: "text", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
-                    SecondName = table.Column<string>(type: "text", nullable: false)
+                    Surname = table.Column<string>(type: "text", nullable: false),
+                    BirthDate = table.Column<DateOnly>(type: "date", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -75,6 +76,7 @@ namespace Learning.DataAccess.Migrations
                     Answer = table.Column<string>(type: "character varying(1500)", maxLength: 1500, nullable: false),
                     Explanation = table.Column<string>(type: "character varying(1500)", maxLength: 1500, nullable: true),
                     DomainId = table.Column<int>(type: "integer", nullable: false),
+                    TextToTranslate = table.Column<string>(type: "text", nullable: false),
                     Words = table.Column<List<string>>(type: "text[]", nullable: false)
                 },
                 constraints: table =>
@@ -97,9 +99,7 @@ namespace Learning.DataAccess.Migrations
                     Explanation = table.Column<string>(type: "character varying(1500)", maxLength: 1500, nullable: true),
                     DomainId = table.Column<int>(type: "integer", nullable: false),
                     MediaType = table.Column<string>(type: "text", nullable: false),
-                    FileOptions_Name = table.Column<string>(type: "text", nullable: false),
-                    FileOptions_PresignedUrl = table.Column<string>(type: "text", nullable: false),
-                    FileOptions_ExpiriedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    MediaFileName = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

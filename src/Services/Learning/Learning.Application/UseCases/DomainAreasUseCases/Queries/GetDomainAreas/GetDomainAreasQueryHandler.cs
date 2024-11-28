@@ -23,6 +23,8 @@ namespace Learning.Application.UseCases.DomainAreasUseCases.Queries.GetDomainAre
             var domainAreas = await _context.Domains
                 .Include(d => d.Tests)
                 .Include(d => d.Questions)
+                .OrderBy(d => d.Chapter.SerialNumber)
+                .ThenBy(d => d.SerialNumber)
                 .ToListAsync(cancellationToken);
 
             var domainAreasDto = _mapper.Map<List<DomainAreaResponseDto>>(domainAreas);

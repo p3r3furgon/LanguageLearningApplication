@@ -4,17 +4,20 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;
+using System;
 
 namespace Learning.Infrastructure.Services
 {
     public class MinioService : IMinioService
     {
         private readonly IMinioClient _minioClient;
+        private readonly HttpClient _httpClient;
         MinioSettings _options;
 
-        public MinioService(IOptions<MinioSettings> options)
+        public MinioService(IOptions<MinioSettings> options, HttpClient httpClient)
         {
             _options = options.Value;
+            _httpClient = httpClient;
             _minioClient = new MinioClient()
                 .WithEndpoint(_options.Host)
                 .WithCredentials(_options.UserName, _options.Password)
@@ -57,7 +60,35 @@ namespace Learning.Infrastructure.Services
                 .WithObject(fileName)
                 .WithExpiry(60 * 60 * 5);
 
-            return await _minioClient.PresignedGetObjectAsync(getPresignedArgs);
+            var presignedUrl = await _minioClient.PresignedGetObjectAsync(getPresignedArgs);
+            Console.WriteLine(presignedUrl);
+
+            var response = await _httpClient.GetAsync(presignedUrl);
+
+            //presignedUrl = presignedUrl.Replace(_options.Host, _options.ExtHost);
+            //Console.WriteLine(presignedUrl);
+            return presignedUrl;
+        }
+
+
+        public async Task<byte[]> GetBytes(string bucketName, string fileName)
+        {
+            var getPresignedArgs = new PresignedGetObjectArgs()
+                .WithBucket(bucketName)
+                .WithObject(fileName)
+                .WithExpiry(60 * 60 * 5);
+
+            var presignedUrl = await _minioClient.PresignedGetObjectAsync(getPresignedArgs);
+            Console.WriteLine(presignedUrl);
+
+            var response = await _httpClient.GetAsync(presignedUrl);
+            Console.WriteLine(response.StatusCode);
+            response.EnsureSuccessStatusCode();
+            var bytes = await response.Content.ReadAsByteArrayAsync();
+
+            //presignedUrl = presignedUrl.Replace(_options.Host, _options.ExtHost);
+            //Console.WriteLine(presignedUrl);
+            return bytes;
         }
 
         public async Task CreateBucketIfNotExists(string bucketName)
@@ -65,7 +96,6 @@ namespace Learning.Infrastructure.Services
             var bucketExists = await _minioClient.BucketExistsAsync(new BucketExistsArgs().WithBucket(bucketName));
             if (!bucketExists)
             {
-                Console.WriteLine("creating");
                 await _minioClient.MakeBucketAsync(new MakeBucketArgs().WithBucket(bucketName));
             }
         }

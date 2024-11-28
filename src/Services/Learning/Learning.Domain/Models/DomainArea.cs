@@ -1,4 +1,5 @@
 ﻿using Learning.Domain.Models.Questions;
+using Newtonsoft.Json;
 
 namespace Learning.Domain.Models
 {
@@ -11,6 +12,8 @@ namespace Learning.Domain.Models
 
         //Relation with Chapter
         public int ChapterId { get; set; }
+
+        [JsonIgnore]
         public Chapter Chapter { get; set; } = null!;
 
         //Relation with Test

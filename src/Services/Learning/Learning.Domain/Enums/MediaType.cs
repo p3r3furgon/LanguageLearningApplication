@@ -8,9 +8,6 @@ namespace Learning.Domain.Enums
         Image,
 
         [Display(Name = "Audio")]
-        Audio,
-
-        [Display(Name = "Video")]
-        Video
+        Audio
     }
 }

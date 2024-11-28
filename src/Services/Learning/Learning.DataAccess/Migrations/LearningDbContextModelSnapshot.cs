@@ -155,15 +155,18 @@ namespace Learning.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateOnly>("BirthDate")
+                        .HasColumnType("date");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("NickName")
+                    b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("SecondName")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -175,6 +178,10 @@ namespace Learning.DataAccess.Migrations
             modelBuilder.Entity("Learning.Domain.Models.Questions.BuildSentanceQuestion", b =>
                 {
                     b.HasBaseType("Learning.Domain.Models.Questions.Question");
+
+                    b.Property<string>("TextToTranslate")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<List<string>>("Words")
                         .IsRequired()

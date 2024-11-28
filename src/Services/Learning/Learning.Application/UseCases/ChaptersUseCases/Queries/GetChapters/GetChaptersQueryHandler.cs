@@ -20,7 +20,9 @@ namespace Learning.Application.UseCases.ChaptersUseCases.Queries.GetChapters
 
         public async Task<GetChaptersResponse> Handle(GetChaptersQuery request, CancellationToken cancellationToken)
         {
-            var chapters = await _context.Chapters.ToListAsync(cancellationToken);
+            var chapters = await _context.Chapters
+                .OrderBy(c => c.SerialNumber)
+                .ToListAsync(cancellationToken);
             var chaptersDto = _mapper.Map<List<ChapterResponseDto>>(chapters);
 
             return new GetChaptersResponse(chaptersDto);

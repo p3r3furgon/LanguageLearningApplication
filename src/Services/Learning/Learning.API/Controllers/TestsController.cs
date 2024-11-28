@@ -4,6 +4,7 @@ using Learning.Application.UseCases.TestsUseCases.Commands.DeleteTest;
 using Learning.Application.UseCases.TestsUseCases.Queries.GetTestById;
 using Learning.Application.UseCases.TestsUseCases.Queries.GetTests;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Learning.API.Controllers
@@ -34,6 +35,8 @@ namespace Learning.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "SuperAdmin")]
         public async Task<IActionResult> AddTest(TestRequestDto testDto)
         {
             var response = await _mediator.Send(new AddTestCommand(testDto));
@@ -41,6 +44,8 @@ namespace Learning.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "SuperAdmin")]
         public async Task<IActionResult> DeleteTest(int id)
         {
             var response = await _mediator.Send(new DeleteTestCommand(id));

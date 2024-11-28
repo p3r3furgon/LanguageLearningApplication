@@ -16,7 +16,11 @@ namespace Learning.Application.UseCases.TestsUseCases.Queries.GetTests
 
         public async Task<GetTestsResponse> Handle(GetTestsQuery request, CancellationToken cancellationToken)
         {
-            var tests = await _context.Tests.ToListAsync(cancellationToken);
+            var tests = await _context.Tests
+                .OrderBy(t => t.Domain.Chapter.SerialNumber)
+                .ThenBy(t => t.Domain.SerialNumber)
+                .ThenBy(t => t.SerialNumber)
+                .ToListAsync(cancellationToken);
 
             return new GetTestsResponse(tests);
         }

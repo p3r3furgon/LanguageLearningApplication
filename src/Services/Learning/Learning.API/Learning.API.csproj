@@ -10,6 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.3.1" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
       <PrivateAssets>all</PrivateAssets>
@@ -22,6 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\CommonFiles\CommonFiles.Messaging\CommonFiles.Messaging.csproj" />
+    <ProjectReference Include="..\..\..\CommonFiles\CommonFiles.Auth\CommonFiles.Auth.csproj" />
     <ProjectReference Include="..\Learning.Application\Learning.Application.csproj" />
     <ProjectReference Include="..\Learning.DataAccess\Learning.DataAccess.csproj" />
     <ProjectReference Include="..\Learning.Infrastructure\Learning.Infrastructure.csproj" />

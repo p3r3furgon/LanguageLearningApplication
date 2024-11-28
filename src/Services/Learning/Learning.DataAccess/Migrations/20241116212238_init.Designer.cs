@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Learning.DataAccess.Migrations
 {
     [DbContext(typeof(LearningDbContext))]
-    [Migration("20241109183925_init")]
+    [Migration("20241116212238_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -158,15 +158,18 @@ namespace Learning.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateOnly>("BirthDate")
+                        .HasColumnType("date");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("NickName")
+                    b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("SecondName")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -179,6 +182,10 @@ namespace Learning.DataAccess.Migrations
                 {
                     b.HasBaseType("Learning.Domain.Models.Questions.Question");
 
+                    b.Property<string>("TextToTranslate")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<List<string>>("Words")
                         .IsRequired()
                         .HasColumnType("text[]");
@@ -189,6 +196,10 @@ namespace Learning.DataAccess.Migrations
             modelBuilder.Entity("Learning.Domain.Models.Questions.MediaQuestion", b =>
                 {
                     b.HasBaseType("Learning.Domain.Models.Questions.Question");
+
+                    b.Property<string>("MediaFileName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("MediaType")
                         .IsRequired()
@@ -233,36 +244,6 @@ namespace Learning.DataAccess.Migrations
                         .HasForeignKey("DomainId");
 
                     b.Navigation("Domain");
-                });
-
-            modelBuilder.Entity("Learning.Domain.Models.Questions.MediaQuestion", b =>
-                {
-                    b.OwnsOne("Learning.Domain.Models.Questions.FileStorageOptions", "FileOptions", b1 =>
-                        {
-                            b1.Property<int>("MediaQuestionId")
-                                .HasColumnType("integer");
-
-                            b1.Property<DateTime>("ExpiriedAt")
-                                .HasColumnType("timestamp with time zone");
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.Property<string>("PresignedUrl")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.HasKey("MediaQuestionId");
-
-                            b1.ToTable("MediaQuestions");
-
-                            b1.WithOwner()
-                                .HasForeignKey("MediaQuestionId");
-                        });
-
-                    b.Navigation("FileOptions")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Learning.Domain.Models.Chapter", b =>

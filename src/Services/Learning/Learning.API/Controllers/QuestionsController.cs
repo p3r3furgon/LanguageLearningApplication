@@ -12,6 +12,7 @@ using Learning.Application.UseCases.QuestionsUseCases.Queries.GetMediaQuestions;
 using Learning.Application.UseCases.QuestionsUseCases.Queries.GetTranslateQuestionById;
 using Learning.Application.UseCases.QuestionsUseCases.Queries.GetTranslateQuestions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Learning.API.Controllers
@@ -28,6 +29,7 @@ namespace Learning.API.Controllers
         }
 
         [HttpGet("media")]
+        [Authorize]
         public async Task<IActionResult> GetMediaQuestions()
         {
             var response = await _mediator.Send(new GetMediaQuestionsQuery());
@@ -35,6 +37,7 @@ namespace Learning.API.Controllers
         }
 
         [HttpGet("media/{id}")]
+        [Authorize]
         public async Task<IActionResult> GetMediaQuestionById(int id)
         {
             var response = await _mediator.Send(new GetMediaQuestionByIdQuery(id));
@@ -42,6 +45,8 @@ namespace Learning.API.Controllers
         }
 
         [HttpPost("media")]
+        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "SuperAdmin")]
         public async Task<IActionResult> AddMediaQuestion([FromForm] MediaQuestionRequestDto mediaQuestionDto)
         {
             var response = await _mediator.Send(new AddMediaQuestionCommand(mediaQuestionDto));
@@ -50,6 +55,8 @@ namespace Learning.API.Controllers
 
 
         [HttpDelete("media/{id}")]
+        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "SuperAdmin")]
         public async Task<IActionResult> DeleteMediaQuestion(int id)
         {
             var response = await _mediator.Send(new DeleteMediaQuestionCommand(id));
@@ -58,6 +65,7 @@ namespace Learning.API.Controllers
 
 
         [HttpGet("translate")]
+        [Authorize]
         public async Task<IActionResult> GetTranslateQuestions()
         {
             var response = await _mediator.Send(new GetTranslateQuestionsQuery());
@@ -65,6 +73,7 @@ namespace Learning.API.Controllers
         }
 
         [HttpGet("translate/{id}")]
+        [Authorize]
         public async Task<IActionResult> GetTranslateQuestionById(int id)
         {
             var response = await _mediator.Send(new GetTranslateQuestionByIdQuery(id));
@@ -72,6 +81,8 @@ namespace Learning.API.Controllers
         }
 
         [HttpPost("translate")]
+        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "SuperAdmin")]
         public async Task<IActionResult> AddTranslateQuestion(TranslateQuestionRequestDto translateQuestionDto)
         {
             var response = await _mediator.Send(new AddTranslateQuestionCommand(translateQuestionDto));
@@ -79,6 +90,8 @@ namespace Learning.API.Controllers
         }
 
         [HttpDelete("translate/{id}")]
+        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "SuperAdmin")]
         public async Task<IActionResult> DeleteTranslateQuestion(int id)
         {
             var response = await _mediator.Send(new DeleteTranslateQuestionCommand(id));
@@ -87,6 +100,7 @@ namespace Learning.API.Controllers
 
 
         [HttpGet("build_sentance")]
+        [Authorize]
         public async Task<IActionResult> GetBuildSentanceQuestions()
         {
             var response = await _mediator.Send(new GetBuildSentanceQuestionsQuery());
@@ -94,6 +108,7 @@ namespace Learning.API.Controllers
         }
 
         [HttpGet("build_sentance/{id}")]
+        [Authorize]
         public async Task<IActionResult> GetBuildSentanceQuestionById(int id)
         {
             var response = await _mediator.Send(new GetBuildSentanceQuestionByIdQuery(id));
@@ -101,6 +116,8 @@ namespace Learning.API.Controllers
         }
 
         [HttpPost("build_sentance")]
+        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "SuperAdmin")]
         public async Task<IActionResult> AddBuildSentanceQuestion([FromForm] BuildSentanceQuestionRequestDto buildSentanceQuestionDto)
         {
             var response = await _mediator.Send(new AddBuildSentanceQuestionCommand(buildSentanceQuestionDto));
@@ -109,6 +126,8 @@ namespace Learning.API.Controllers
 
 
         [HttpDelete("build_sentance/{id}")]
+        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "SuperAdmin")]
         public async Task<IActionResult> DeleteBuildSentanceQuestion(int id)
         {
             var response = await _mediator.Send(new DeleteBuildSentanceQuestionCommand(id));
